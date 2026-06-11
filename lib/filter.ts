@@ -10,6 +10,16 @@ export function isRankFiltered(rank: RankId | null, filteredRanks: RankId[]): bo
   return filteredRanks.includes(rank);
 }
 
+/** Normalize a handle list into a lookup set (Codeforces handles are case-insensitive). */
+export function normalizeHandles(handles: string[]): Set<string> {
+  return new Set(handles.map((h) => h.trim().toLowerCase()).filter(Boolean));
+}
+
+/** True if `handle` is on the (already-normalized) whitelist. */
+export function isWhitelisted(handle: string, whitelist: Set<string>): boolean {
+  return whitelist.has(handle.trim().toLowerCase());
+}
+
 function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

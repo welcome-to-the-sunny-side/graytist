@@ -12,7 +12,7 @@
 // settings re-partitions in place — including restoring everything when disabled.
 
 import { classifyUserLink, RANK_BY_ID } from '@/lib/ranks';
-import { matchedKeyword } from '@/lib/filter';
+import { isWhitelisted, matchedKeyword, normalizeHandles } from '@/lib/filter';
 import type { GraytistConfig, RecentActionsSettings } from '@/lib/config';
 
 const FILTERED_BOX_ATTR = 'data-graytist-filtered-ra';
@@ -44,10 +44,11 @@ export function runRecentActions(config: GraytistConfig): void {
   const filtUl = box.querySelector<HTMLElement>('.recent-actions ul');
   if (!filtUl) return;
 
+  const whitelist = normalizeHandles(config.whitelist);
   const keep: HTMLElement[] = [];
   const drop: HTMLElement[] = [];
   for (const li of orderedRows(origUl, filtUl)) {
-    const reason = decide(li, ra);
+    const reason = decide(li, ra, whitelist);
     if (reason) {
       drop.push(li);
       setTooltip(li, reason);
@@ -65,10 +66,11 @@ export function runRecentActions(config: GraytistConfig): void {
 }
 
 /** Returns a hover-tooltip reason if the row should be filtered, else null. */
-function decide(li: HTMLElement, ra: RecentActionsSettings): string | null {
+function decide(li: HTMLElement, ra: RecentActionsSettings, whitelist: Set<string>): string | null {
   const authorLink = li.querySelector('a.rated-user');
   if (authorLink) {
-    const { rank } = classifyUserLink(authorLink);
+    const { handle, rank } = classifyUserLink(authorLink);
+    if (isWhitelisted(handle, whitelist)) return null; // whitelist overrides everything
     if (rank !== null && ra.filteredRanks.includes(rank)) {
       return `Filtered (${RANK_BY_ID[rank].label})`;
     }

@@ -38,6 +38,11 @@ export interface StandingsSettings {
 export interface GraytistConfig {
   /** Master switch — when false the extension is inert. */
   enabled: boolean;
+  /**
+   * Global allowlist of handles (case-insensitive) that are NEVER filtered by any
+   * feature — overrides ranks and keywords. For official unrated accounts etc.
+   */
+  whitelist: string[];
   recentActions: RecentActionsSettings;
   comments: CommentsSettings;
   standings: StandingsSettings;
@@ -45,6 +50,7 @@ export interface GraytistConfig {
 
 export const DEFAULT_CONFIG: GraytistConfig = {
   enabled: true,
+  whitelist: ['atcoder_official', 'ICPCNews', 'luogu_official', 'MikeMirzayanov'],
   recentActions: {
     enabled: true,
     filteredRanks: [],
@@ -118,6 +124,7 @@ export function mergeConfig(base: GraytistConfig, o: unknown): GraytistConfig {
   const st = (src.standings ?? {}) as Record<string, unknown>;
   return {
     enabled: asBool(src.enabled, base.enabled),
+    whitelist: asStringArray(src.whitelist) ?? [...base.whitelist],
     recentActions: {
       enabled: asBool(ra.enabled, base.recentActions.enabled),
       filteredRanks: asRankArray(ra.filteredRanks) ?? [...base.recentActions.filteredRanks],

@@ -96,6 +96,30 @@ function keywordEditor(kw: KeywordSettings): HTMLElement {
   );
 }
 
+function whitelistEditor(): HTMLElement {
+  const area = h('textarea', {
+    rows: 4,
+    placeholder: 'One handle per line',
+    value: config.whitelist.join('\n'),
+  });
+  area.addEventListener('input', () => {
+    config.whitelist = area.value.split('\n').map((s) => s.trim()).filter(Boolean);
+    scheduleSave();
+  });
+  return h(
+    'section',
+    { class: 'feature' },
+    h('div', { class: 'feature-head' }, h('h2', {}, 'Whitelist')),
+    h(
+      'p',
+      { class: 'desc' },
+      'These handles are never filtered by any feature — overrides ranks and keywords. For official unrated accounts and the like. Case-insensitive.',
+    ),
+    h('div', { class: 'field-label' }, 'Always-allowed handles'),
+    area,
+  );
+}
+
 function rankSet(get: () => RankId[], set: (next: RankId[]) => void): HTMLElement {
   return rankGrid(get(), (id, on) => {
     const next = new Set(get());
@@ -141,6 +165,8 @@ function render(): void {
       }),
     ),
   );
+
+  app.append(whitelistEditor());
 
   app.append(
     section(

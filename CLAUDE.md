@@ -17,6 +17,10 @@ encode the rank.
 3. **Standings** — move filtered contestants into a "Filtered Leaderboard" (e.g. new/unrated
    accounts, a common AI-cheater signal).
 
+A single global **whitelist** of handles (case-insensitive) overrides every feature: content
+by a whitelisted author is never filtered. Defaults to official unrated accounts
+(`atcoder_official`, `ICPCNews`, `luogu_official`, `MikeMirzayanov`).
+
 ## How ranks are read (the core trick)
 Handles render as `<a class="rated-user user-COLOR" title="<Rank> <handle>">handle</a>`.
 - The **title** spells out the exact named rank, so we resolve title-first.
@@ -42,7 +46,7 @@ Handles render as `<a class="rated-user user-COLOR" title="<Rank> <handle>">hand
 ## Layout
 - `lib/ranks.ts` — rank model + `classifyUserLink()`.
 - `lib/config.ts` — settings schema, defaults, `chrome.storage.sync` load/save/watch + merge.
-- `lib/filter.ts` — pure predicates (`isRankFiltered`, `matchesKeywords`).
+- `lib/filter.ts` — pure predicates (`isRankFiltered`, `matchedKeyword`, `isWhitelisted`).
 - `lib/dom.ts` — `observeDom()` (debounced load+mutation driver) + idempotency markers.
 - `entrypoints/content.ts` — content script; feature passes hook into `apply()`.
 - `entrypoints/options/` — settings UI.
