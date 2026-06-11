@@ -54,7 +54,8 @@ Handles render as `<a class="rated-user user-COLOR" title="<Rank> <handle>">hand
 - `lib/ranks.ts` — rank model + `classifyUserLink()`.
 - `lib/config.ts` — settings schema, defaults, `chrome.storage.sync` load/save/watch + merge.
 - `lib/filter.ts` — pure predicates (`isRankFiltered`, `matchedKeyword`, `isWhitelisted`).
-- `lib/dom.ts` — `observeDom()` (debounced load+mutation driver) + idempotency markers.
-- `lib/features/{recentActions,comments,standings}.ts` — the three feature passes.
-- `entrypoints/content.ts` — content script; feature passes run in `apply()` via `observeDom`.
-- `entrypoints/options/` — settings UI.
+- `lib/features/{recentActions,comments,standings}.ts` — the three feature passes (idempotent + reversible).
+- `entrypoints/content.ts` — content script (`document_idle`); runs the passes once on load and
+  again on each config change. No MutationObserver: Codeforces is server-rendered and doesn't
+  live-update without a reload, so watching the DOM is pure cost (and froze big standings pages).
+- `entrypoints/{popup,options}/` — both mount the shared settings UI (`lib/ui/settings.ts`).

@@ -1,6 +1,5 @@
 import { defineContentScript } from '#imports';
 import { loadConfig, watchConfig, type GraytistConfig } from '@/lib/config';
-import { observeDom } from '@/lib/dom';
 import { runRecentActions } from '@/lib/features/recentActions';
 import { runComments } from '@/lib/features/comments';
 import { runStandings } from '@/lib/features/standings';
@@ -8,12 +7,17 @@ import { log } from '@/lib/log';
 
 export default defineContentScript({
   matches: ['*://codeforces.com/*', '*://*.codeforces.com/*'],
-  runAt: 'document_end',
+  // document_idle: run after the page's own scripts have settled, so we don't race
+  // Codeforces' load-time JS (e.g. restoring a comment's collapse state on top of ours).
+  runAt: 'document_idle',
   main() {
     let config: GraytistConfig | null = null;
 
-    // Each pass is idempotent and self-gating (a disabled feature cleans itself up), so
-    // we can safely re-run on every DOM change. Passes converge to a no-op at steady state.
+    // Codeforces is a server-rendered, multi-page site: everything we filter is in the
+    // initial HTML and doesn't live-update without a reload (and each navigation is a full
+    // page load that re-runs this script). So we apply once on load and again on each
+    // config change — no MutationObserver. The passes are idempotent and self-gating, so
+    // the config-change re-run cleanly re-partitions or restores.
     const pass = () => {
       if (!config) return;
       runRecentActions(config);
@@ -24,11 +28,11 @@ export default defineContentScript({
     loadConfig().then((loaded) => {
       config = loaded;
       log.info('active', config);
-      observeDom(pass, { debounceMs: 150 });
+      pass();
       watchConfig((next) => {
         config = next;
         log.debug('config updated');
-        pass(); // re-partition immediately on settings change
+        pass();
       });
     });
   },
