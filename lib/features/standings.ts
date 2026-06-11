@@ -18,6 +18,10 @@ const WRAP_ATTR = 'data-graytist-filtered-standings';
 const ST_IDX = 'data-graytist-st-idx';
 
 export function runStandings(config: GraytistConfig): void {
+  // Only act on standings pages (contest/gym/group, incl. /page/N and /friends/true).
+  // The `.standings` table shouldn't appear elsewhere, but this keeps us strictly scoped.
+  if (!/\/standings(?:\/|$)/.test(location.pathname)) return;
+
   const wrap = document.querySelector<HTMLElement>(`[${WRAP_ATTR}]`);
 
   // Original table = the .standings not inside our filtered clone.
