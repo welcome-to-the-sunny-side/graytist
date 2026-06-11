@@ -42,11 +42,19 @@ Handles render as `<a class="rated-user user-COLOR" title="<Rank> <handle>">hand
   `.shown-comment` (expanded); children nest under `.shown-comment > ul.comment-children`.
   Collapse = flip those two `display` values (no dependency on Codeforces' JS). Author is the
   `a.rated-user` in the avatar; scope by matching `commentid` to avoid grabbing a child's.
+- **Standings**: `table.standings` inside `div.datatable`. Contestant rows = `tr[participantid]`
+  (first `<td>` = rank number; `td.contestant-cell > a.rated-user` = handle). Skip the header
+  `<tr>` and the trailing `tr.standingsStatisticsRow`. Page nav = `div.custom-links-pagination`
+  following the table; the cloned "Filtered standings" table is inserted after it. Move whole
+  rows so ranks are preserved (ranks can tie — not a clean 1..N); single-contestant rows only
+  (multi-handle/team rows are left alone). Page size varies (20 live / 200 after), so never
+  assume a row count.
 
 ## Layout
 - `lib/ranks.ts` — rank model + `classifyUserLink()`.
 - `lib/config.ts` — settings schema, defaults, `chrome.storage.sync` load/save/watch + merge.
 - `lib/filter.ts` — pure predicates (`isRankFiltered`, `matchedKeyword`, `isWhitelisted`).
 - `lib/dom.ts` — `observeDom()` (debounced load+mutation driver) + idempotency markers.
-- `entrypoints/content.ts` — content script; feature passes hook into `apply()`.
+- `lib/features/{recentActions,comments,standings}.ts` — the three feature passes.
+- `entrypoints/content.ts` — content script; feature passes run in `apply()` via `observeDom`.
 - `entrypoints/options/` — settings UI.

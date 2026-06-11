@@ -3,6 +3,7 @@ import { loadConfig, watchConfig, type GraytistConfig } from '@/lib/config';
 import { observeDom } from '@/lib/dom';
 import { runRecentActions } from '@/lib/features/recentActions';
 import { runComments } from '@/lib/features/comments';
+import { runStandings } from '@/lib/features/standings';
 import { log } from '@/lib/log';
 
 export default defineContentScript({
@@ -17,7 +18,7 @@ export default defineContentScript({
       if (!config) return;
       runRecentActions(config);
       runComments(config);
-      // TODO(feature 3): runStandings(config)
+      runStandings(config);
     };
 
     loadConfig().then((loaded) => {
