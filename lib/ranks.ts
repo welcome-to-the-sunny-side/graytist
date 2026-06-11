@@ -29,6 +29,8 @@ export interface RankInfo {
   id: RankId;
   /** Human label shown in the options UI. */
   label: string;
+  /** Compact label for tight UI (e.g. popup chips). */
+  short: string;
   /** Inclusive rating bounds; null where there is no numeric rating. */
   min: number | null;
   max: number | null;
@@ -40,18 +42,18 @@ export interface RankInfo {
 
 /** Ordered low → high. `admin` is special (non-rating) and excluded from filter UIs. */
 export const RANKS: RankInfo[] = [
-  { id: 'unrated', label: 'Unrated', min: null, max: null, colorClass: 'user-black', cssColor: '#000000' },
-  { id: 'newbie', label: 'Newbie', min: 0, max: 1199, colorClass: 'user-gray', cssColor: '#808080' },
-  { id: 'pupil', label: 'Pupil', min: 1200, max: 1399, colorClass: 'user-green', cssColor: '#008000' },
-  { id: 'specialist', label: 'Specialist', min: 1400, max: 1599, colorClass: 'user-cyan', cssColor: '#03a89e' },
-  { id: 'expert', label: 'Expert', min: 1600, max: 1899, colorClass: 'user-blue', cssColor: '#0000ff' },
-  { id: 'candidate-master', label: 'Candidate Master', min: 1900, max: 2099, colorClass: 'user-violet', cssColor: '#aa00aa' },
-  { id: 'master', label: 'Master', min: 2100, max: 2299, colorClass: 'user-orange', cssColor: '#ff8c00' },
-  { id: 'international-master', label: 'International Master', min: 2300, max: 2399, colorClass: 'user-orange', cssColor: '#ff8c00' },
-  { id: 'grandmaster', label: 'Grandmaster', min: 2400, max: 2599, colorClass: 'user-red', cssColor: '#ff0000' },
-  { id: 'international-grandmaster', label: 'International Grandmaster', min: 2600, max: 2999, colorClass: 'user-red', cssColor: '#ff0000' },
-  { id: 'legendary-grandmaster', label: 'Legendary Grandmaster', min: 3000, max: null, colorClass: 'user-legendary', cssColor: '#ff0000' },
-  { id: 'admin', label: 'Admin / Headquarters', min: null, max: null, colorClass: 'user-admin', cssColor: '#000000' },
+  { id: 'unrated', label: 'Unrated', short: 'Unrated', min: null, max: null, colorClass: 'user-black', cssColor: '#000000' },
+  { id: 'newbie', label: 'Newbie', short: 'Newbie', min: 0, max: 1199, colorClass: 'user-gray', cssColor: '#808080' },
+  { id: 'pupil', label: 'Pupil', short: 'Pupil', min: 1200, max: 1399, colorClass: 'user-green', cssColor: '#008000' },
+  { id: 'specialist', label: 'Specialist', short: 'Spec', min: 1400, max: 1599, colorClass: 'user-cyan', cssColor: '#03a89e' },
+  { id: 'expert', label: 'Expert', short: 'Expert', min: 1600, max: 1899, colorClass: 'user-blue', cssColor: '#0000ff' },
+  { id: 'candidate-master', label: 'Candidate Master', short: 'CM', min: 1900, max: 2099, colorClass: 'user-violet', cssColor: '#aa00aa' },
+  { id: 'master', label: 'Master', short: 'Master', min: 2100, max: 2299, colorClass: 'user-orange', cssColor: '#ff8c00' },
+  { id: 'international-master', label: 'International Master', short: 'IM', min: 2300, max: 2399, colorClass: 'user-orange', cssColor: '#ff8c00' },
+  { id: 'grandmaster', label: 'Grandmaster', short: 'GM', min: 2400, max: 2599, colorClass: 'user-red', cssColor: '#ff0000' },
+  { id: 'international-grandmaster', label: 'International Grandmaster', short: 'IGM', min: 2600, max: 2999, colorClass: 'user-red', cssColor: '#ff0000' },
+  { id: 'legendary-grandmaster', label: 'Legendary Grandmaster', short: 'LGM', min: 3000, max: null, colorClass: 'user-legendary', cssColor: '#ff0000' },
+  { id: 'admin', label: 'Admin / Headquarters', short: 'Admin', min: null, max: null, colorClass: 'user-admin', cssColor: '#000000' },
 ];
 
 export const RANK_BY_ID: Record<RankId, RankInfo> = Object.fromEntries(
