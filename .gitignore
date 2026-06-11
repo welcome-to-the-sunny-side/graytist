@@ -1,0 +1,9 @@
+node_modules
+.wxt
+.output
+stats.html
+*.log
+.DS_Store
+
+# Saved Codeforces sample pages used as local references
+tmp
