@@ -1,9 +1,14 @@
-# Graytist
+# GRAYtist
 
 Browser extension (Chrome/Chromium, MV3) that filters Codeforces content by **rating
 tier** and **keywords**. No Codeforces API is used: a user's rank is read straight from
 the DOM, because every handle is rendered with a color class and a title attribute that
 encode the rank.
+
+The user-facing name is styled **GRAYtist** (manifest name, action title, page titles,
+and the popup/options header wordmark). Internal identifiers stay lowercase `graytist`
+(storage key `graytist:config`, the `GraytistConfig` type, `data-graytist-*` attributes,
+the `[graytist]` log prefix, the npm package name) — don't rename those.
 
 ## Stack
 - **WXT** (wxt.dev) + **TypeScript**, vanilla (no UI framework).
@@ -14,8 +19,8 @@ encode the rank.
 1. **Recent Actions** — move filtered blogs into a "Filtered Recent Actions" box, by the
    blog author's rank and/or title keywords.
 2. **Comments** — collapse filtered comments on load (Codeforces' native collapse).
-3. **Standings** — move filtered contestants into a "Filtered Leaderboard" (e.g. new/unrated
-   accounts, a common AI-cheater signal).
+3. **Standings** — move filtered contestants into a separate "Filtered standings" table
+   (e.g. new/unrated accounts, a common AI-cheater signal).
 
 A single global **whitelist** of handles (case-insensitive) overrides every feature: content
 by a whitelisted author is never filtered. Defaults to official unrated accounts
@@ -58,4 +63,9 @@ Handles render as `<a class="rated-user user-COLOR" title="<Rank> <handle>">hand
 - `entrypoints/content.ts` — content script (`document_idle`); runs the passes once on load and
   again on each config change. No MutationObserver: Codeforces is server-rendered and doesn't
   live-update without a reload, so watching the DOM is pure cost (and froze big standings pages).
-- `entrypoints/{popup,options}/` — both mount the shared settings UI (`lib/ui/settings.ts`).
+- `entrypoints/{popup,options}/` — both mount the shared settings UI (`lib/ui/settings.ts`),
+  whose header is the wordmark image.
+- `public/icon/{16,32,48,96,128}.png` — extension/toolbar icon (a white pixel "G" on
+  transparent); WXT auto-detects these into the manifest `icons`. `public/wordmark.png` —
+  the "GRAYtist" wordmark used as the popup/options header. Both are derived from the
+  source art in `tmp/logos/` (gitignored) via ImageMagick.

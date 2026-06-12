@@ -61,7 +61,7 @@ function buildUI(ctx: Ctx): HTMLElement {
     h(
       'header',
       { class: 'gt-header' },
-      h('h1', {}, 'Graytist'),
+      h('h1', { class: 'gt-title' }, h('img', { class: 'gt-logo', src: '/wordmark.png', alt: 'GRAYtist' })),
       ctx.status,
       switchToggle(c.enabled, 'Extension enabled', (v) => {
         ctx.config.enabled = v;

@@ -4,7 +4,7 @@ import { defineConfig } from 'wxt';
 // Default target is Chrome/Chromium MV3; `wxt -b firefox` builds Firefox.
 export default defineConfig({
   manifest: {
-    name: 'Graytist',
+    name: 'GRAYtist',
     description:
       'Filter Codeforces Recent Actions, comments, and standings by rating tier and keywords.',
     permissions: ['storage'],
