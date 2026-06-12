@@ -2,16 +2,11 @@
   <img src="public/wordmark.png" alt="GRAYtist" width="440">
 </p>
 
-<p align="center">
-  <b>So you're a proud ratist? Here's why that's problematic.</b><br>
-  <sub>Just kidding, me too.</sub>
-</p>
-
 **GRAYtist** is a browser extension that helps you filter out low-quality content from Codeforces.
 
-You might say: "But [DNR](https://codeforces.com/profile/DNR), such a tool would surely spam some API calls or use some heavyweight classifier models! My potato PC couldn't handle it!"
+You might say: "B-b-but [DNR](https://codeforces.com/profile/DNR), such a tool would surely spam some API calls or use some heavyweight classifier models! My potato PC couldn't handle it, right?!"
 
-The answer is no. We instead use the principle of ratism ($P(\text{low rating} \iff \text{low quality}) \approx 1$) to optimize away all of that nonsense.
+Wrong. We instead use the principle of ratism ($P(\text{low rating} \iff \text{low quality}) \approx 1$) to optimize away all of that nonsense.
 
 ## Features
 
