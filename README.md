@@ -38,13 +38,23 @@ The answer is no. We instead use the principle of ratism ($P(\text{low rating} \
 
 ## Installation
 
-No listing on the Web Store for now (I'm too lazy), so you'll have to install it manually.
+No public store listing yet (I'm too lazy), so you'll have to install it manually.
+
+### Chromium (Chrome, Brave, Edge, etc.)
 
 1. Download `graytist-0.1.0-chrome.zip` from the [latest release](https://github.com/welcome-to-the-sunny-side/graytist/releases/latest) and unzip it.
 2. Open `chrome://extensions` (Brave: `brave://extensions`, Edge: `edge://extensions`).
 3. Turn on **Developer mode** (top-right toggle).
 4. Click **Load unpacked** and select the unzipped folder (the one with `manifest.json` inside).
-5. Pin it from the puzzle-piece menu. Open any blog or standings page and toggle ranks from the popup.
+5. Pin it from the puzzle-piece menu.
+
+### Firefox
+
+1. Download `graytist-0.1.0-firefox.xpi` from the [latest release](https://github.com/welcome-to-the-sunny-side/graytist/releases/latest).
+2. Open it in Firefox and drag the file into a Firefox window, or press **Ctrl+O** and pick the `.xpi`.
+3. Click **Add** when Firefox prompts.
+
+Once it's installed, open any blog or standings page and toggle ranks from the popup.
 
 <p align="center">
   <img src="assets/meme.png" alt="OKAY / NOT OKAY" width="460">
