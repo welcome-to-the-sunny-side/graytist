@@ -17,7 +17,7 @@ The answer is no. We instead use the principle of ratism ($P(\text{low rating} \
 
 ### 1. Filter blogs by author rank and title
 
-- Don't want to see blogs from grays because they're annoying and blogs from nutellas because they make you feel inferior? GRAYtist allows you to filter blogs for any combination of author ranks.
+- Don't want to see blogs from grays because they're annoying, and blogs from nutellas because they make you feel inferior? GRAYtist allows you to filter blogs for any combination of author ranks.
 - Tired of seeing the 1e9-th blog about cheaters? GRAYtist supports filtering blogs by keywords in the title (regex and substring-matching supported too).
 - Filtered blogs are moved to a disjoint "Filtered recent actions" below the original component.
 
