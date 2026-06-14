@@ -31,7 +31,7 @@ export interface CommentsSettings {
 
 export interface StandingsSettings {
   enabled: boolean;
-  /** Ranks moved to the "Filtered Leaderboard". */
+  /** Ranks moved to the "Filtered standings" table. */
   filteredRanks: RankId[];
 }
 

@@ -7,9 +7,9 @@
 //
 // A blog is filtered when its author's rank is selected OR its title matches a keyword.
 //
-// The pass is idempotent and live-reversible: at steady state it performs ZERO DOM
-// mutations (so it never re-triggers the MutationObserver that drives it), and toggling
-// settings re-partitions in place — including restoring everything when disabled.
+// The pass is idempotent and reversible: at steady state it performs ZERO DOM mutations
+// (the no-op guards skip redundant moves), and toggling settings re-partitions in place —
+// including restoring everything when disabled.
 
 import { classifyUserLink, RANK_BY_ID } from '@/lib/ranks';
 import { isWhitelisted, matchedKeyword, normalizeHandles } from '@/lib/filter';
@@ -84,9 +84,8 @@ function decide(li: HTMLElement, ra: RecentActionsSettings, whitelist: Set<strin
 
 /**
  * All `<li>` rows from both lists, in their original order. Each row is stamped with a
- * stable index on first sight (an attribute mutation, which the childList observer
- * ignores) so we can restore order after moving rows between lists. The sidebar is
- * server-rendered per page load, so indices are always assigned in DOM order.
+ * stable index on first sight so we can restore order after moving rows between lists.
+ * The sidebar is server-rendered per page load, so indices are always assigned in DOM order.
  */
 function orderedRows(origUl: HTMLElement, filtUl: HTMLElement): HTMLElement[] {
   const rows: HTMLElement[] = [];

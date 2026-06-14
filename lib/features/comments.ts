@@ -9,11 +9,11 @@
 // We filter by the comment's OWN author rank (scoped to its own avatar, never a reply's).
 // Collapsing a comment folds its whole subtree — that's the chosen behavior for mixed threads.
 //
-// Liveness: live + respectful. A per-comment marker tracks who collapsed it:
+// Respectful re-runs: a per-comment marker tracks who collapsed it:
 //   (unset) → we never touched it          'collapsed' → we collapsed it
 //   'override' → you manually expanded ours → we leave it alone thereafter
-// All our changes are inline styles / attributes (never childList), so this pass never
-// re-triggers the MutationObserver that drives it, and settles to a no-op.
+// On each config change we re-process every comment; the marker is what lets a re-run
+// tell our own collapses from yours, so it settles to a no-op and never fights you.
 
 import { classifyUserLink, RANK_BY_ID } from '@/lib/ranks';
 import { isWhitelisted, normalizeHandles } from '@/lib/filter';

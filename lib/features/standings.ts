@@ -1,4 +1,4 @@
-// Feature 3 — standings / leaderboard filtering.
+// Feature 3 — standings filtering.
 //
 // `table.standings` (inside `div.datatable`) has a header `<tr>`, contestant rows
 // `tr[participantid]`, and a trailing `tr.standingsStatisticsRow`. We move filtered
@@ -8,7 +8,7 @@
 //
 // Single-contestant rows only — rows with multiple handles (teams) are left alone.
 // Header and statistics rows never move. Pagination size is irrelevant (we partition
-// whatever rows are on the current page). Idempotent, live, and reversible like feature 1.
+// whatever rows are on the current page). Idempotent and reversible like feature 1.
 
 import { classifyUserLink, RANK_BY_ID } from '@/lib/ranks';
 import { isWhitelisted, normalizeHandles } from '@/lib/filter';
