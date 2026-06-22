@@ -21,12 +21,16 @@ export interface RecentActionsSettings {
   filteredRanks: RankId[];
   /** Title keywords that move a blog to the filtered box. */
   keywords: KeywordSettings;
+  /** Move "necropost" rows (old entries bumped back up by a new comment) to the filtered box. */
+  filterNecroposts: boolean;
 }
 
 export interface CommentsSettings {
   enabled: boolean;
   /** Ranks whose comments get collapsed on load. */
   filteredRanks: RankId[];
+  /** Show the green "(+N)" count of unfiltered replies hidden under a collapsed comment. */
+  showUnfilteredCount: boolean;
 }
 
 export interface StandingsSettings {
@@ -55,10 +59,12 @@ export const DEFAULT_CONFIG: GraytistConfig = {
     enabled: true,
     filteredRanks: [],
     keywords: { terms: [], mode: 'substring', caseSensitive: false },
+    filterNecroposts: false,
   },
   comments: {
     enabled: true,
     filteredRanks: [],
+    showUnfilteredCount: true,
   },
   standings: {
     enabled: true,
@@ -129,10 +135,12 @@ export function mergeConfig(base: GraytistConfig, o: unknown): GraytistConfig {
       enabled: asBool(ra.enabled, base.recentActions.enabled),
       filteredRanks: asRankArray(ra.filteredRanks) ?? [...base.recentActions.filteredRanks],
       keywords: mergeKeywords(base.recentActions.keywords, ra.keywords),
+      filterNecroposts: asBool(ra.filterNecroposts, base.recentActions.filterNecroposts),
     },
     comments: {
       enabled: asBool(cm.enabled, base.comments.enabled),
       filteredRanks: asRankArray(cm.filteredRanks) ?? [...base.comments.filteredRanks],
+      showUnfilteredCount: asBool(cm.showUnfilteredCount, base.comments.showUnfilteredCount),
     },
     standings: {
       enabled: asBool(st.enabled, base.standings.enabled),

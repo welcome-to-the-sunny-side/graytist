@@ -5,7 +5,9 @@
 // is the title. We move filtered rows into a twin box ("Filtered recent actions") cloned
 // from the original chrome and inserted directly below it.
 //
-// A blog is filtered when its author's rank is selected OR its title matches a keyword.
+// A blog is filtered when its author's rank is selected, its title matches a keyword, or
+// (optionally) it's a necropost — an old entry bumped back up by a new comment, which
+// Codeforces flags with an hourglass marker on the row.
 //
 // The pass is idempotent and reversible: at steady state it performs ZERO DOM mutations
 // (the no-op guards skip redundant moves), and toggling settings re-partitions in place —
@@ -75,11 +77,21 @@ function decide(li: HTMLElement, ra: RecentActionsSettings, whitelist: Set<strin
       return `Filtered (${RANK_BY_ID[rank].label})`;
     }
   }
+  if (ra.filterNecroposts && isNecropost(li)) return 'Filtered (necropost)';
   const titleLink = li.querySelector('a[href*="/blog/entry/"]');
   const title = titleLink?.textContent?.trim() ?? '';
   const kw = matchedKeyword(title, ra.keywords);
   if (kw) return `Filtered (keyword “${kw}”)`;
   return null;
+}
+
+/**
+ * A "necropost" row: an old entry bumped back into Recent Actions by a new comment.
+ * Codeforces tags these with an hourglass icon. We match the icon filename (locale-
+ * independent) first, then the alt/title text (English UI) as a fallback.
+ */
+function isNecropost(li: HTMLElement): boolean {
+  return !!li.querySelector('img[src*="hourglass"], img[alt="Necropost"], img[title="Necropost"]');
 }
 
 /**

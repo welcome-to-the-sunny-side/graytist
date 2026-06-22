@@ -17,8 +17,13 @@ the `[graytist]` log prefix, the npm package name) — don't rename those.
 
 ## Features (built one at a time)
 1. **Recent Actions** — move filtered blogs into a "Filtered Recent Actions" box, by the
-   blog author's rank and/or title keywords.
-2. **Comments** — collapse filtered comments on load (Codeforces' native collapse).
+   blog author's rank, title keywords, and/or whether it's a **necropost** (an old entry
+   bumped back up by a new comment; Codeforces flags these with an hourglass marker).
+2. **Comments** — collapse filtered comments on load (Codeforces' native collapse). A
+   collapsed comment that still hides unfiltered replies gets a green **"(+N)"** tag next to
+   Codeforces' "show (+N)" link, counting the would-be-visible replies folded inside
+   (toggleable). Annotations are decoupled from collapse ownership: CF persists manual
+   hides server-side, so the tag also appears on comments CF itself renders collapsed.
 3. **Standings** — move filtered contestants into a separate "Filtered standings" table
    (e.g. new/unrated accounts, a common AI-cheater signal).
 
@@ -41,12 +46,16 @@ Handles render as `<a class="rated-user user-COLOR" title="<Rank> <handle>">hand
 ## Key DOM selectors (confirmed against saved pages in `tmp/`, gitignored)
 - **Recent Actions**: unique `div.recent-actions` (inside a `div.roundbox.sidebox`). Rows are
   `.recent-actions > ul > li`; first `a.rated-user` = blog author, second
-  `a[href*="/blog/entry/"]` = title (keyword target). One user per row = the author.
+  `a[href*="/blog/entry/"]` = title (keyword target). One user per row = the author. A
+  **necropost** row carries an hourglass icon — detect via `img[src*="hourglass"]` (locale-
+  independent) or `img[alt="Necropost"]`.
 - **Comments**: unique `div.comments[commentableid]`. Each comment is `div.comment[commentid]`
   with two pre-rendered views — `.hidden-comment` (collapsed, `display:none`) and
   `.shown-comment` (expanded); children nest under `.shown-comment > ul.comment-children`.
   Collapse = flip those two `display` values (no dependency on Codeforces' JS). Author is the
-  `a.rated-user` in the avatar; scope by matching `commentid` to avoid grabbing a child's.
+  `a.rated-user` in the avatar; scope by matching `commentid` to avoid grabbing a child's. The
+  collapsed stub's expand link is `a.showComment` ("show (+N)", N in `span.hidden-children`);
+  the "(+N)" unfiltered-reply marker is our own `<span>` appended after it.
 - **Standings**: `table.standings` inside `div.datatable`. Contestant rows = `tr[participantid]`
   (first `<td>` = rank number; `td.contestant-cell > a.rated-user` = handle). Skip the header
   `<tr>` and the trailing `tr.standingsStatisticsRow`. Page nav = `div.custom-links-pagination`

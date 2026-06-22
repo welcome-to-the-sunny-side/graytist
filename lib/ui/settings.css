@@ -133,6 +133,14 @@
   gap: 0.3rem;
   cursor: pointer;
 }
+.gt-check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
 
 /* Toggle switch -------------------------------------------------------------- */
 .gt-switch {

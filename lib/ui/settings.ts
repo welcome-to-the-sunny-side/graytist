@@ -76,6 +76,7 @@ function buildUI(ctx: Ctx): HTMLElement {
       (v) => (ctx.config.recentActions.enabled = v),
       () => ctx.config.recentActions.filteredRanks,
       keywordEditor(ctx, () => ctx.config.recentActions.keywords),
+      necropostToggle(ctx),
     ),
     featureSection(
       ctx,
@@ -84,6 +85,7 @@ function buildUI(ctx: Ctx): HTMLElement {
       () => ctx.config.comments.enabled,
       (v) => (ctx.config.comments.enabled = v),
       () => ctx.config.comments.filteredRanks,
+      unfilteredCountToggle(ctx),
     ),
     featureSection(
       ctx,
@@ -104,7 +106,7 @@ function featureSection(
   getEnabled: () => boolean,
   setEnabled: (v: boolean) => void,
   getRanks: () => RankId[],
-  extra?: HTMLElement,
+  ...extras: HTMLElement[]
 ): HTMLElement {
   return h(
     'section',
@@ -120,7 +122,7 @@ function featureSection(
     ),
     h('p', { class: 'gt-desc' }, desc),
     rankCells(getRanks, ctx.save),
-    ...(extra ? [extra] : []),
+    ...extras,
   );
 }
 
@@ -146,6 +148,37 @@ function rankCells(getRanks: () => RankId[], onChange: () => void): HTMLElement 
     row.append(cell);
   }
   return row;
+}
+
+/** A labelled checkbox row (the `gt-check` style). */
+function checkToggle(label: string, checked: boolean, onChange: (v: boolean) => void): HTMLElement {
+  const cb = h('input', { type: 'checkbox', checked });
+  cb.addEventListener('change', () => onChange(cb.checked));
+  return h('label', { class: 'gt-check' }, cb, label);
+}
+
+/** Checkbox: show the green "(+N)" count of unfiltered replies hidden under a collapsed comment. */
+function unfilteredCountToggle(ctx: Ctx): HTMLElement {
+  return checkToggle(
+    'Show count of hidden unfiltered replies',
+    ctx.config.comments.showUnfilteredCount,
+    (v) => {
+      ctx.config.comments.showUnfilteredCount = v;
+      ctx.save();
+    },
+  );
+}
+
+/** Checkbox: move necropost rows (old entries bumped by a new comment) to the filtered box. */
+function necropostToggle(ctx: Ctx): HTMLElement {
+  return checkToggle(
+    'Filter necroposts (old entries bumped by a new comment)',
+    ctx.config.recentActions.filterNecroposts,
+    (v) => {
+      ctx.config.recentActions.filterNecroposts = v;
+      ctx.save();
+    },
+  );
 }
 
 function keywordEditor(ctx: Ctx, get: () => KeywordSettings): HTMLElement {
@@ -183,7 +216,7 @@ function keywordEditor(ctx: Ctx, get: () => KeywordSettings): HTMLElement {
   return h(
     'div',
     { class: 'gt-sub' },
-    h('div', { class: 'gt-field-label' }, 'Title keywords'),
+    h('div', { class: 'gt-field-label' }, 'Title keywords to be filtered'),
     area,
     h(
       'div',
@@ -213,7 +246,7 @@ function whitelistSection(ctx: Ctx): HTMLElement {
     h(
       'p',
       { class: 'gt-desc' },
-      'Never filtered by any feature (overrides everything else). Case-insensitive.',
+      'Accounts never filtered by any feature (overrides everything else). Case-insensitive.',
     ),
     area,
   );
