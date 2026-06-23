@@ -1,7 +1,7 @@
 # GRAYtist
 
-Browser extension (Chrome/Chromium, MV3) that filters Codeforces content by **rating
-tier** and **keywords**. No Codeforces API is used: a user's rank is read straight from
+Browser extension (Chrome/Chromium MV3; also packaged for Firefox MV2) that filters Codeforces
+content by **rating tier** and **keywords**. No Codeforces API is used: a user's rank is read straight from
 the DOM, because every handle is rendered with a color class and a title attribute that
 encode the rank.
 
@@ -13,6 +13,9 @@ the `[graytist]` log prefix, the npm package name) — don't rename those.
 ## Stack
 - **WXT** (wxt.dev) + **TypeScript**, vanilla (no UI framework).
 - `npm run dev` (Chrome), `npm run build`, `npm run compile` (tsc typecheck).
+- Firefox **MV2**: `npm run dev:firefox` / `wxt build -b firefox` / `wxt zip -b firefox` — a
+  Firefox-only `browser_specific_settings.gecko` block (add-on id + `data_collection: none`) is added
+  in `wxt.config.ts`; distribution is an unlisted, Mozilla-signed `.xpi` (re-sign on every version bump).
 - Entry points live in `entrypoints/`; shared logic in `lib/` (imported via the `@/` alias).
 
 ## Features (built one at a time)
